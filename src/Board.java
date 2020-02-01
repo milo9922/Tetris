@@ -1,10 +1,15 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class Board extends JPanel {
+
+public class Board extends JPanel implements KeyListener {
 
     private BufferedImage blocks;
     private final int blockSize = 30;
@@ -12,6 +17,10 @@ public class Board extends JPanel {
     private int[][] board = new int[boardWidth][boardHeight];
     private Shape[] shapes = new Shape[7];
     private Shape currentShape;
+    private Timer timer;
+    private final int FPS = 60;
+    private final int delay = 1000/FPS;
+
 
     public Board() {
         try {
@@ -19,6 +28,17 @@ public class Board extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        timer = new Timer(delay, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            update();
+            repaint();
+            }
+        });
+
+        timer.start();
 
         // shapes
 
@@ -56,8 +76,12 @@ public class Board extends JPanel {
                 {1, 1}
         }, this);
 
-        currentShape = shapes[5];
+        currentShape = shapes[3];
 
+    }
+
+    public void update() {
+        currentShape.update();
     }
 
     public void paintComponent(Graphics g) {
@@ -75,5 +99,33 @@ public class Board extends JPanel {
 
     public int getBlockSize() {
         return blockSize;
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            currentShape.setDeltaX(-1);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            currentShape.setDeltaX(1);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+            currentShape.speedDown();
+        }
+      /*  if(e.getKeyCode() == KeyEvent.VK_UP) {
+            currentShape.rotate();
+        }*/
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+            currentShape.normalSpeed();
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
     }
 }

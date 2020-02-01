@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class Window {
 
-    public static final int WIDTH = 300, HEIGHT = 600;
+    public static final int WIDTH = 315, HEIGHT = 640;
     private JFrame window;
     private Board board;
 
@@ -15,7 +15,7 @@ public class Window {
         board = new Board();
 
         window.add(board);
-
+        window.addKeyListener(board);
         window.setVisible(true);
 
 

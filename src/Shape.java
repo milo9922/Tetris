@@ -10,6 +10,7 @@ public class Shape {
     private int x, y;
     private int normalSpeed = 600, speedDown = 60, currentSpeed;
     private long time, lastTime;
+    private boolean collision = false;
 
     public Shape(BufferedImage block, int[][] coords, Board board) {
         this.block = block;
@@ -54,13 +55,28 @@ public class Shape {
             }
         }
     }
-/*
-    public void rotate() {
 
+    public void rotate() {
+        int[][] rotatedMatrix = null;
+        rotatedMatrix = getTranspose(coords);
+        rotatedMatrix = getReverseMatrix(rotatedMatrix);
+
+        if(x + rotatedMatrix[0].length > 10 || y + rotatedMatrix.length > 20) {
+            return;
+        }
+
+        coords = rotatedMatrix;
     }
 
     private int[][] getTranspose(int[][] matrix) {
+        int[][] newMatrix = new int[matrix[0].length][matrix.length];
 
+        for(int i = 0; i < matrix.length; i++) {
+            for(int j = 0; j < matrix[0].length; j++) {
+                newMatrix[j][i] = matrix[i][j];
+            }
+        }
+        return newMatrix;
     }
 
     private int[][] getReverseMatrix(int[][] matrix) {
@@ -68,10 +84,12 @@ public class Shape {
 
         for(int i = 0; i < middle; i++) {
             int[] m = matrix[i];
-
+            matrix[i] = matrix[matrix.length - i - 1];
+            matrix[matrix.length - i - 1] = m;
         }
+        return matrix;
     }
-*/
+
     public void setDeltaX(int deltaX) {
         this.deltaX = deltaX;
     }

@@ -112,9 +112,9 @@ public class Board extends JPanel implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             currentShape.speedDown();
         }
-      /*  if(e.getKeyCode() == KeyEvent.VK_UP) {
+        if(e.getKeyCode() == KeyEvent.VK_UP) {
             currentShape.rotate();
-        }*/
+        }
     }
 
     @Override

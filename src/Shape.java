@@ -10,12 +10,14 @@ public class Shape {
     private int x, y;
     private int normalSpeed = 600, speedDown = 60, currentSpeed;
     private long time, lastTime;
-    private boolean collision = false;
+    private boolean collision = false, moveX = false;
+    private int color;
 
-    public Shape(BufferedImage block, int[][] coords, Board board) {
+    public Shape(BufferedImage block, int[][] coords, Board board, int color) {
         this.block = block;
         this.coords = coords;
         this.board = board;
+        this.color = color;
 
         currentSpeed = normalSpeed;
         time = 0;
@@ -30,21 +32,29 @@ public class Shape {
         lastTime = System.currentTimeMillis();
 
         if (collision) {
-
             for (int row = 0; row < coords.length; row++) {
                 for (int col = 0; col < coords[row].length; col++) {
                     if (coords[row][col] != 0) {
-                        board.getBoard()[y + row][x + col] = 1;
+                        board.getBoard()[y + row][x + col] = color;
                     }
                 }
             }
-
             board.setNextShape();
         }
 
 
-        if (!(x + deltaX + coords[0].length > 10) && !(x + deltaX < 0))
-            x += deltaX;
+        if (!(x + deltaX + coords[0].length > 10) && !(x + deltaX < 0)) {
+            for (int row = 0; row < coords.length; row++)
+                for (int col = 0; col < coords[row].length; col++)
+                    if (coords[row][col] != 0) {
+                        if (board.getBoard()[y + row][x + deltaX + col] != 0)
+                            moveX = false;
+                    }
+
+            if (moveX)
+                x += deltaX;
+        }
+
 
         if (!(y + 1 + coords.length > 20)) {
 
@@ -65,6 +75,7 @@ public class Shape {
             collision = true;
         }
         deltaX = 0;
+        moveX = true;
     }
 
     public void render(Graphics g) {
@@ -131,5 +142,9 @@ public class Shape {
 
     public int[][] getCoords() {
         return coords;
+    }
+
+    public int getColor() {
+        return color;
     }
 }

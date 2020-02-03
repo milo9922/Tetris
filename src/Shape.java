@@ -39,6 +39,7 @@ public class Shape {
                     }
                 }
             }
+            checkLine();
             board.setNextShape();
         }
 
@@ -66,7 +67,6 @@ public class Shape {
                         }
                     }
 
-
             if (time > currentSpeed) {
                 y++;
                 time = 0;
@@ -74,9 +74,28 @@ public class Shape {
         } else {
             collision = true;
         }
+
         deltaX = 0;
         moveX = true;
     }
+
+    private void checkLine() {
+        int height = board.getBoard().length - 1;
+
+        for (int i = height; i > 0; i--) {
+            int count = 0;
+            for (int j = 0; j < board.getBoard()[0].length; j++) {
+                if (board.getBoard()[i][j] != 0)
+                    count++;
+
+                board.getBoard()[height][j] = board.getBoard()[i][j];
+
+            }
+            if (count < board.getBoard()[0].length)
+                height--;
+        }
+    }
+
 
     public void render(Graphics g) {
 
@@ -91,6 +110,9 @@ public class Shape {
     }
 
     public void rotate() {
+        if (collision)
+            return;
+
         int[][] rotatedMatrix = null;
         rotatedMatrix = getTranspose(coords);
         rotatedMatrix = getReverseMatrix(rotatedMatrix);

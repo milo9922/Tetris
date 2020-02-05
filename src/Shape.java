@@ -121,6 +121,14 @@ public class Shape {
             return;
         }
 
+        for (int row = 0; row < board.getBoard().length; row++) {
+            for (int col = 0; col < rotatedMatrix[0].length; col++) {
+                if (board.getBoard()[y + row][x + col] != 0) {
+                    return;
+                }
+            }
+        }
+
         coords = rotatedMatrix;
     }
 

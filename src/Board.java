@@ -20,7 +20,7 @@ public class Board extends JPanel implements KeyListener {
     private Shape[] shapes = new Shape[7];
     private Shape currentShape;
     private Timer timer;
-
+    private boolean gameOver = false;
 
     public Board() {
         blocks = ImageLoader.load("/blocks.png");
@@ -80,7 +80,11 @@ public class Board extends JPanel implements KeyListener {
 
     public void update() {
         currentShape.update();
+        if (gameOver) {
+            timer.stop();
+        }
     }
+
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -102,6 +106,13 @@ public class Board extends JPanel implements KeyListener {
         for (int j = 0; j < boardWidth; j++) {
             g.drawLine(j * blockSize, 0, j * blockSize, boardHeight * blockSize);
         }
+
+        if (gameOver) {
+            String gameOverString = "GAME OVER";
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Georgia", Font.BOLD, 30));
+            g.drawString(gameOverString, 50, Window.HEIGHT / 2);
+        }
     }
 
     public void setNextShape() {
@@ -110,6 +121,13 @@ public class Board extends JPanel implements KeyListener {
         Shape newShape = new Shape(shapes[index].getBlock(), shapes[index].getCoords(), this, shapes[index].getColor());
 
         currentShape = newShape;
+
+        for (int row = 0; row < currentShape.getCoords().length; row++)
+            for (int col = 0; col < currentShape.getCoords()[row].length; col++)
+                if (currentShape.getCoords()[row][col] != 0) {
+                    if (board[row][col + 3] != 0)
+                        gameOver = true;
+                }
     }
 
 

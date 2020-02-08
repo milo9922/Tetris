@@ -12,6 +12,7 @@ public class Shape {
     private long time, lastTime;
     private boolean collision = false, moveX = false;
     private int color;
+    private int score = 0;
 
     public Shape(BufferedImage block, int[][] coords, Board board, int color) {
         this.block = block;

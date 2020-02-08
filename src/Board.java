@@ -1,4 +1,5 @@
-import javax.imageio.ImageIO;
+import utils.ImageLoader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 
 public class Board extends JPanel implements KeyListener {
@@ -15,7 +15,7 @@ public class Board extends JPanel implements KeyListener {
     private final int boardWidth = 10, boardHeight = 20;
     private final int FPS = 60;
     private final int delay = 1000 / FPS;
-    private BufferedImage blocks;
+    private BufferedImage blocks, background;
     private int[][] board = new int[boardHeight][boardWidth];
     private Shape[] shapes = new Shape[7];
     private Shape currentShape;
@@ -23,11 +23,9 @@ public class Board extends JPanel implements KeyListener {
 
 
     public Board() {
-        try {
-            blocks = ImageIO.read(Board.class.getResource("/blocks.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        blocks = ImageLoader.load("/blocks.png");
+        background = ImageLoader.load("/background.jpg");
+
 
         timer = new Timer(delay, new ActionListener() {
 
@@ -86,6 +84,7 @@ public class Board extends JPanel implements KeyListener {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.drawImage(background, 0, 0, null);
         currentShape.render(g);
 
         for (int row = 0; row < board.length; row++) {
@@ -143,7 +142,6 @@ public class Board extends JPanel implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     public int[][] getBoard() {

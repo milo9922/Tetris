@@ -15,17 +15,19 @@ public class Board extends JPanel implements KeyListener {
     private final int boardWidth = 10, boardHeight = 20;
     private final int FPS = 60;
     private final int delay = 1000 / FPS;
-    private BufferedImage blocks, background;
+    private BufferedImage blocks, background, scoreBoardBackground;
     private int[][] board = new int[boardHeight][boardWidth];
     private Shape[] shapes = new Shape[7];
     private Shape currentShape;
     private Timer timer;
     private boolean gameOver = false;
+    private int score = 0;
+    // TODO: implement score counting method
 
     public Board() {
         blocks = ImageLoader.load("/blocks.png");
         background = ImageLoader.load("/background.jpg");
-
+        scoreBoardBackground = ImageLoader.load("/scoreBoardBackground.jpg");
 
         timer = new Timer(delay, new ActionListener() {
 
@@ -89,6 +91,7 @@ public class Board extends JPanel implements KeyListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, null);
+        g.drawImage(scoreBoardBackground, 300, 0, null);
         currentShape.render(g);
 
         for (int row = 0; row < board.length; row++) {
@@ -99,13 +102,14 @@ public class Board extends JPanel implements KeyListener {
             }
         }
 
-        for (int i = 0; i < boardHeight; i++) {
+        for (int i = 0; i <= boardHeight; i++) {
             g.drawLine(0, i * blockSize, boardWidth * blockSize, i * blockSize);
         }
 
-        for (int j = 0; j < boardWidth; j++) {
+        for (int j = 0; j <= boardWidth; j++) {
             g.drawLine(j * blockSize, 0, j * blockSize, boardHeight * blockSize);
         }
+
 
         if (gameOver) {
             String gameOverString = "GAME OVER";
@@ -113,6 +117,16 @@ public class Board extends JPanel implements KeyListener {
             g.setFont(new Font("Georgia", Font.BOLD, 30));
             g.drawString(gameOverString, 50, Window.HEIGHT / 2);
         }
+
+        // score board
+
+        g.setColor(Color.WHITE);
+
+        g.setFont(new Font("Georgia", Font.BOLD, 20));
+
+        g.drawString("SCORE", Window.WIDTH - 125, Window.HEIGHT / 2 - 250);
+        g.drawString(score + "", Window.WIDTH - 125, Window.HEIGHT / 2 + -220);
+
     }
 
     public void setNextShape() {
@@ -164,5 +178,9 @@ public class Board extends JPanel implements KeyListener {
 
     public int[][] getBoard() {
         return board;
+    }
+
+    public void addScore() {
+        score += 100;
     }
 }

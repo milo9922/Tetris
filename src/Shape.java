@@ -12,7 +12,7 @@ public class Shape {
     private long time, lastTime;
     private boolean collision = false, moveX = false;
     private int color;
-    private int score = 0;
+
 
     public Shape(BufferedImage block, int[][] coords, Board board, int color) {
         this.block = block;
@@ -89,11 +89,15 @@ public class Shape {
                 if (board.getBoard()[i][j] != 0)
                     count++;
 
-                board.getBoard()[height][j] = board.getBoard()[i][j];
+                if (count == board.getBoard()[0].length)
+                    board.addScore();
 
+                board.getBoard()[height][j] = board.getBoard()[i][j];
             }
+
             if (count < board.getBoard()[0].length)
                 height--;
+
         }
     }
 
@@ -169,13 +173,5 @@ public class Shape {
 
     public int getColor() {
         return color;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 }

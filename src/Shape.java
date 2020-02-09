@@ -81,6 +81,7 @@ public class Shape {
     }
 
     private void checkLine() {
+        int erasedLines = 0;
         int height = board.getBoard().length - 1;
 
         for (int i = height; i > 0; i--) {
@@ -89,8 +90,14 @@ public class Shape {
                 if (board.getBoard()[i][j] != 0)
                     count++;
 
-                if (count == board.getBoard()[0].length)
+                if (count == board.getBoard()[0].length) {
                     board.addScore();
+                    erasedLines++;
+                    if (erasedLines == 4) {
+                        for (int k = 0; k < 4; k++)
+                            board.addScore();
+                    }
+                }
 
                 board.getBoard()[height][j] = board.getBoard()[i][j];
             }

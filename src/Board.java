@@ -22,7 +22,6 @@ public class Board extends JPanel implements KeyListener {
     private Timer timer;
     private boolean gameOver = false;
     private int score = 0;
-    // TODO: implement score counting method
 
     public Board() {
         blocks = ImageLoader.load("/blocks.png");
